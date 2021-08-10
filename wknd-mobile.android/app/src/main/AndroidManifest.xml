@@ -34,9 +34,9 @@
             android:name=".android.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".android.MainActivity">
-            <meta-data
+<!--            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adobe.aem.guides.wknd.mobile.android.MainActivity" />
+                android:value="com.adobe.aem.guides.wknd.mobile.android.MainActivity" />-->
         </activity>
         <activity
             android:name=".android.MainActivity"

@@ -19,9 +19,14 @@
             android:title="@string/navigation_home" app:showAsAction="never"/>
     -->
     <item
-            android:id="@+id/navigation_settings"
+            android:id="@+id/navigation_structured"
             android:icon="@drawable/ic_dashboard_black_24dp"
-            android:title="@string/navigation_settings"
+            android:title="Structured"
             android:checked="false" app:showAsAction="never"/>
+    <item
+        android:id="@+id/navigation_unstructured"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Unstructured"
+        android:checked="false" app:showAsAction="never"/>
 
 </menu>

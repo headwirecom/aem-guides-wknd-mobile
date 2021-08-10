@@ -12,34 +12,64 @@
 
 package com.adobe.aem.guides.wknd.mobile.android;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.adobe.aem.guides.wknd.mobile.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private WebView webView;
+    private SettingsActivity that;
+    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        that = this;
         setContentView(R.layout.settings_activity);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.settings, new SettingsFragment())
-                .commit();
+        navigation = findViewById(R.id.navigation);
+
+        webView = findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl("https://wknd.site/content/experience-fragments/wknd/language-masters/en/site/footer/master.html");
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
         @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.navigation_unstructured:
+                    intent = new Intent(that, SettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_structured:
+                    intent = new Intent(that, MainActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+
+            return false;
         }
-    }
+    };
+
+
 }

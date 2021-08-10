@@ -63,9 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent intent;
             switch (item.getItemId()) {
-                case R.id.navigation_settings:
-                    Intent intent = new Intent(that, SettingsActivity.class);
+                case R.id.navigation_unstructured:
+                    intent = new Intent(that, SettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_structured:
+                    intent = new Intent(that, MainActivity.class);
                     startActivity(intent);
                     return true;
             }
