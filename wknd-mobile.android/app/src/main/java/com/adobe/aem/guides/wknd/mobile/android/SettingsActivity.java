@@ -13,7 +13,9 @@
 package com.adobe.aem.guides.wknd.mobile.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,8 +28,16 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.adobe.aem.guides.wknd.mobile.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final String AEM_UNSTRUCTURED_PATH = "/content/experience-fragments/wknd/language-masters/en/featured/camping-western-australia/master.html";
+    private String AEM_DEFAULT_HOST = "http://localhost:4503";
+    private String AEM_ANDROID_EMULATOR_LOCALHOST = "http://localhost";
+    private String AEM_ANDROID_EMULATOR_LOCALHOST_PROXY = "http://10.0.2.2";
+
+    private SharedPreferences sharedPreferences;
     private WebView webView;
     private SettingsActivity that;
     private BottomNavigationView navigation;
@@ -39,10 +49,13 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_activity);
         navigation = findViewById(R.id.navigation);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final String aemUrl = getAemUrl();
         webView = findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("https://wknd.site/content/experience-fragments/wknd/language-masters/en/site/footer/master.html");
+        webView.loadUrl(aemUrl);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -71,5 +84,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
     };
 
+    private String getAemUrl() {
+        return getAemHost() + getAemPath();
+    }
+
+    private String getAemHost() {
+        String host = sharedPreferences.getString("host", AEM_DEFAULT_HOST);
+
+        if (StringUtils.startsWith(host, AEM_ANDROID_EMULATOR_LOCALHOST)) {
+            host = StringUtils.replaceOnce(host, AEM_ANDROID_EMULATOR_LOCALHOST, AEM_ANDROID_EMULATOR_LOCALHOST_PROXY);
+        }
+
+        return host;
+    }
+
+    private String getAemPath() {
+        return AEM_UNSTRUCTURED_PATH;
+    }
 
 }
